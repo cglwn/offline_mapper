@@ -24,6 +24,7 @@
 #include <ros/ros.h>
 #include <stack>
 #include <vector>
+#include <velodyne_pointcloud/point_types.h>
 
 // Defines (should NEVER change)
 //   parameters that will change should be parameters with 'setXXX' functions
@@ -118,7 +119,7 @@ private:
   Grid grid;
   int size_x;
   int size_y;
-  pcl::PointCloud<pcl::PointXYZI>::Ptr global_cloud;
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr global_cloud;
   pcl::PointCloud<pcl::PointXYZ>::Ptr obstacle_cloud;
   pcl::PointCloud<pcl::PointXYZ>::Ptr ground_cloud;
   nav_msgs::OccupancyGrid::Ptr drivabilityGrid;
@@ -162,7 +163,7 @@ public:
   }
   MLS(int size_x_, int size_y_, double res, bool roll, double robot_size = 1.45)
       : grid(size_x_, size_y_),
-        global_cloud(new pcl::PointCloud<pcl::PointXYZI>),
+        global_cloud(new pcl::PointCloud<velodyne_pointcloud::PointXYZIR>),
         obstacle_cloud(new pcl::PointCloud<pcl::PointXYZ>),
         ground_cloud(new pcl::PointCloud<pcl::PointXYZ>),
         drivabilityGrid(new nav_msgs::OccupancyGrid) {
@@ -225,9 +226,9 @@ public:
   }
 
   void clearMap();
-  void addToMap(pcl::PointCloud<pcl::PointXYZI>::Ptr
+  void addToMap(pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr
                     input_cloud); // assumed pose already set
-  void addToMap(pcl::PointCloud<pcl::PointXYZI>::Ptr input_cloud,
+  void addToMap(pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr input_cloud,
                 geometry_msgs::PoseStamped pose); // sets pose first
   void addToOccupancy(
       pcl::PointCloud<pcl::PointXYZ>::Ptr input_cloud); // sets pose first
@@ -236,7 +237,7 @@ public:
 
   void updateElevationGrid();
 
-  pcl::PointCloud<pcl::PointXYZI>::Ptr getGlobalCloud() { return global_cloud; }
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr getGlobalCloud() { return global_cloud; }
   nav_msgs::OccupancyGrid::Ptr getDrivability() { return drivabilityGrid; }
   grid_map::GridMap getElevationGrid();
   void getSegmentedClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &obstacle,

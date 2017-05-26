@@ -124,6 +124,8 @@ int main(int argc, char **argv) {
     ROS_ERROR("Bag exception : %s", ex.what());
   }
 
+  sensor_msgs::PointCloud2 full_map;
+
   rosbag::View view(bag, rosbag::TopicQuery(topics), ros::TIME_MIN,
                     ros::TIME_MAX, true);
 
@@ -166,6 +168,7 @@ int main(int argc, char **argv) {
           elevation_pub.publish(srv.response.elevation_map);
           map_cloud_pub.publish(srv.response.full_map_cloud);
           drivablility_pub.publish(srv.response.drivability_map);
+          full_map = srv.response.full_map_cloud;
           ROS_INFO_STREAM("Published Responses");
         } else {
           ROS_ERROR("Failed to call service");
@@ -187,6 +190,15 @@ int main(int argc, char **argv) {
     }
   }
   bag.close();
+
+  rosbag::Bag newbag;
+  try {
+    bag.open("~/fullmap.bag", rosbag::bagmode::Write); // throws exception if fails
+    ROS_INFO_STREAM("Bag is open");
+  } catch (rosbag::BagException &ex) {
+    ROS_ERROR("Bag exception : %s", ex.what());
+  }
+  bag.write("/laserslam/full_pointcloud", ros::Time::now(), full_map);
 
   ROS_INFO_STREAM("All Scans Complete");
 

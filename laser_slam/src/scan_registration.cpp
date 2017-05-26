@@ -92,8 +92,8 @@ std::vector<int> ScanRegistration::getKNN(PoseGraph &pG, Node &gN,
 }
 
 Eigen::Matrix6d ScanRegistration::computeEdgeInformationLUM(
-    pcl::PointCloud<pcl::PointXYZI>::Ptr &source_trans,
-    pcl::PointCloud<pcl::PointXYZI>::Ptr &target, double max_corr_distance) {
+    pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr &source_trans,
+    pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr &target, double max_corr_distance) {
   // this function assumes source_could is transformed by the pose provided by
   // the scan reg algo
 
@@ -105,13 +105,13 @@ Eigen::Matrix6d ScanRegistration::computeEdgeInformationLUM(
   Eigen::Matrix6d edgeCov = Eigen::Matrix6d::Identity();
 
   // build kd tree for source points
-  pcl::KdTreeFLANN<pcl::PointXYZI> kdtree;
+  pcl::KdTreeFLANN<velodyne_pointcloud::PointXYZIR> kdtree;
   kdtree.setInputCloud(target);
 
   // iterate through the source cloud and compute match covariance
 
   for (int i = 0; i < numSourcePts; i++) {
-    pcl::PointXYZI qpt = source_trans->points[i];
+    velodyne_pointcloud::PointXYZIR qpt = source_trans->points[i];
     std::vector<int> nn_idx;
     std::vector<float> nn_sqr_dist;
     kdtree.nearestKSearch(
@@ -236,11 +236,11 @@ bool ScanRegistration::calcEdgeIcp(Edge &gE, PoseGraph &pG, double scale_div) {
   transformation = (Mfrom.inverse() * Mto).cast<float>();
   Eigen::Affine3d initialization_pose(transformation.cast<double>());
   tf::poseEigenToMsg(initialization_pose, initPose.pose);
-  pcl::PointCloud<pcl::PointXYZI>::Ptr from_cld(
-      new pcl::PointCloud<pcl::PointXYZI>);
-  pcl::PointCloud<pcl::PointXYZI>::Ptr to_cld(
-      new pcl::PointCloud<pcl::PointXYZI>);
-  pcl::VoxelGrid<pcl::PointXYZI> sor;
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr from_cld(
+      new pcl::PointCloud<velodyne_pointcloud::PointXYZIR>);
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr to_cld(
+      new pcl::PointCloud<velodyne_pointcloud::PointXYZIR>);
+  pcl::VoxelGrid<velodyne_pointcloud::PointXYZIR> sor;
   sor.setLeafSize(double(course_scale_initial_leaf_size / (scale_div)),
                   double(course_scale_initial_leaf_size / (scale_div)),
                   double(course_scale_initial_leaf_size / scale_div));
@@ -253,8 +253,8 @@ bool ScanRegistration::calcEdgeIcp(Edge &gE, PoseGraph &pG, double scale_div) {
   ROS_INFO_STREAM("Scan Registraion::Reference scan size: " << to_cld->size());
   ROS_INFO_STREAM("Scan Registraion::Target scan size: " << from_cld->size());
 
-  pcl::PointCloud<pcl::PointXYZI>::Ptr temp(
-      new pcl::PointCloud<pcl::PointXYZI>);
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr temp(
+      new pcl::PointCloud<velodyne_pointcloud::PointXYZIR>);
   registration_icp.setInputSource(to_cld);
   registration_icp.setInputTarget(from_cld);
   registration_icp.align(*temp, transformation);

@@ -35,6 +35,7 @@
   <run_depend>eigen_conversions</run_depend>
   <run_depend>tf_conversions</run_depend>
   <run_depend>visualization_msgs</run_depend>
+  <run_depend>velodyne_pointcloud</run_depend>
   <run_depend>ground_segmentation</run_depend>
   <run_depend>grid_map</run_depend>
   <run_depend>grid_map_ros</run_depend>

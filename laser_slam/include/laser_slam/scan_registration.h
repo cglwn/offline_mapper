@@ -26,6 +26,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <velodyne_pointcloud/point_types.h>
 #include <vector>
 #include <vector>
 
@@ -49,11 +50,11 @@ private:
   double getNearestKF(PoseGraph &pG, Node &gN);
   bool calcEdgeIcp(Edge &gE, PoseGraph &pG, double scale_div);
   Eigen::Matrix6d
-  computeEdgeInformationLUM(pcl::PointCloud<pcl::PointXYZI>::Ptr &source_trans,
-                            pcl::PointCloud<pcl::PointXYZI>::Ptr &target,
+  computeEdgeInformationLUM(pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr &source_trans,
+                            pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr &target,
                             double max_corr_dist);
   // variables
-  pcl::IterativeClosestPoint<pcl::PointXYZI, pcl::PointXYZI> registration_icp;
+  pcl::IterativeClosestPoint<velodyne_pointcloud::PointXYZIR, velodyne_pointcloud::PointXYZIR> registration_icp;
   double course_scale_initial_leaf_size;
   ;
   double course_scale_icp_distance_max;

@@ -26,8 +26,8 @@ void LaserSlam::regenerateGlobalMap() {
   for (unsigned int i = 0; i < pose_graph->nodes.size(); i++) {
     // Transform keyframe into global frame
     Eigen::Affine3d trans;
-    pcl::PointCloud<pcl::PointXYZI>::Ptr trans_cloud(
-        new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr trans_cloud(
+        new pcl::PointCloud<velodyne_pointcloud::PointXYZIR>);
     tf::poseMsgToEigen(pose_graph->nodes[i].pose.pose, trans);
     pcl::transformPointCloud(*(pose_graph->nodes[i].keyframe), *trans_cloud,
                              trans);
@@ -36,7 +36,7 @@ void LaserSlam::regenerateGlobalMap() {
 }
 
 bool LaserSlam::insertAndProcess(
-    pcl::PointCloud<pcl::PointXYZI>::Ptr input_cloud,
+    pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr input_cloud,
     Eigen::Affine3d input_pose) {
 
   std::vector<Eigen::Affine3d> refined_pose_vec;
@@ -172,8 +172,8 @@ bool LaserSlam::insertPointCloud(laser_slam::InsertPointCloud::Request &req,
                                  laser_slam::InsertPointCloud::Response &res) {
   ROS_INFO("Laser SLAM::Processing new Point Cloud");
   // Convert to PCL point cloud.
-  pcl::PointCloud<pcl::PointXYZI>::Ptr input_cloud(
-      new pcl::PointCloud<pcl::PointXYZI>);
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr input_cloud(
+      new pcl::PointCloud<velodyne_pointcloud::PointXYZIR>);
   pcl::fromROSMsg(req.point_cloud, *input_cloud);
   Eigen::Affine3d input_pose;
   tf::poseMsgToEigen(req.point_cloud_pose, input_pose);
@@ -198,7 +198,7 @@ bool LaserSlam::insertPointCloud(laser_slam::InsertPointCloud::Request &req,
   res.elevation_map = elevation_msg;
 
   // set response for full map cloud
-  pcl::PointCloud<pcl::PointXYZI>::Ptr full_map_cloud;
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr full_map_cloud;
   full_map_cloud = global_map->getGlobalCloud();
   sensor_msgs::PointCloud2 cloud_msg;
   pcl::toROSMsg(*full_map_cloud, cloud_msg);

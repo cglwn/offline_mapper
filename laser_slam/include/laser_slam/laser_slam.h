@@ -82,7 +82,7 @@ public:
 private:
   // functions
   void regenerateGlobalMap();
-  bool insertAndProcess(pcl::PointCloud<pcl::PointXYZI>::Ptr input_cloud,
+  bool insertAndProcess(pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr input_cloud,
                         Eigen::Affine3d input_pose);
 
   // variables

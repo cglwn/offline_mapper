@@ -12,6 +12,7 @@
 #define GRAPH_SLAM_H
 
 #include <geometry_msgs/PoseStamped.h>
+#include <velodyne_pointcloud/point_types.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <vector>
@@ -31,8 +32,8 @@ struct Edge {
 struct Node {
   int idx;                                       // The index of the node.
   geometry_msgs::PoseStamped pose;               // The pose.
-  pcl::PointCloud<pcl::PointXYZI>::Ptr keyframe; // The point cloud.
-  Node() : keyframe(new pcl::PointCloud<pcl::PointXYZI>) {}
+  pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr keyframe; // The point cloud.
+  Node() : keyframe(new pcl::PointCloud<velodyne_pointcloud::PointXYZIR>) {}
   Eigen::Affine3d prior_pose; // Prior pose.
   Eigen::MatrixXd
       prior_information; // Prior information matrix. (Doesn't seem to be used.)

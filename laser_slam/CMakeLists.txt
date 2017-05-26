@@ -37,7 +37,8 @@ find_package(catkin REQUIRED COMPONENTS
         eigen_conversions 
         ground_segmentation 
         actionlib 
-        std_srvs)
+        std_srvs
+        velodyne_pointcloud)
 find_package(SUITESPARSE REQUIRED)
 
 if(OPTIMIZER STREQUAL "GTSAM")
@@ -85,6 +86,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 ${SUITESPARSE_INCLUDE_DIRS}
 ${GTSAM_INCLUDE_DIRS}
+${velodyne_pointcloud_INCLUDE_DIRS}
 )
 
 
