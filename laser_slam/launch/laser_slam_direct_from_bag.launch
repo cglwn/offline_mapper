@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="laser_slam" type="laser_slam_direct_from_bag" name="laser_slam_service_from_bag" output="screen" launch-prefix="gdb -ex run --args"/>
+	<arg name="bag" default="/media/sf_Data/Original Bags/loop1mc.bag"/>
+	<param name="bag_file_path" value="$(arg bag)" type="str" />
+	<param name="velodyne_topic_name" value="/velodyne_points" type="str" />
+	<param name="ekf_topic_name" value="/ekf_odom" type="str" />
+	<param name="gps_topic_name" value="/gps_fix/navsatfix" type="str" />
+	<param name="distance_increment" value="0.0" type="double" />
+	<param name="skip_scans" value="0" type="int" />
+</launch>

@@ -39,11 +39,13 @@
 class LaserSlam {
 public:
   // constructor
+  LaserSlam() : initialized(false) {}
+
   LaserSlam(int x_size, int y_size, double map_res, double vehicle_h,
             double init_leaf_size, double icp_distance_max, double trans_thresh,
             double rot_thresh)
       : x_cell_size(x_size), y_cell_size(y_size), map_resolution(map_res),
-        vehicle_height(vehicle_h) {
+        vehicle_height(vehicle_h), initialized(true) {
     // initialize the global map
     global_map = new MLS(x_cell_size, y_cell_size, map_resolution, false,
                          vehicle_height);
@@ -79,11 +81,13 @@ public:
   // MLS map
   MLS *global_map;
 
+  bool insertAndProcess(
+      pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr input_cloud,
+      Eigen::Affine3d input_pose);
+
 private:
   // functions
   void regenerateGlobalMap();
-  bool insertAndProcess(pcl::PointCloud<velodyne_pointcloud::PointXYZIR>::Ptr input_cloud,
-                        Eigen::Affine3d input_pose);
 
   // variables
 
@@ -102,6 +106,8 @@ private:
   PoseGraph *pose_graph;
   ScanRegistration *scan_registration;
   bool finished_insertion;
+
+  bool initialized;
 };
 
 #endif

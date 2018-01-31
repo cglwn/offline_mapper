@@ -96,6 +96,7 @@ link_directories(
 )
 
 add_executable(laser_slam_service_from_bag src/laser_slam_service_from_bag.cpp)
+add_executable(laser_slam_direct_from_bag src/laser_slam.cpp src/global_mapping_viz.cpp src/scan_registration.cpp src/csv_tools.cpp src/laser_slam_direct_from_bag.cpp ${OPTIMIZER_SRC_FILES})
 add_executable(laser_slam_service_tester  src/laser_slam_service_tester.cpp src/csv_tools.cpp)
 add_executable(laser_slam src/laser_slam.cpp src/global_mapping_viz.cpp src/scan_registration.cpp src/csv_tools.cpp src/main.cpp ${OPTIMIZER_SRC_FILES})
 
@@ -112,9 +113,15 @@ add_dependencies( laser_slam
                   ${${PROJECT_NAME}_EXPORTED_TARGETS}
                   ${catkin_EXPORTED_TARGETS} )
 
+add_dependencies( laser_slam_direct_from_bag
+                  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+                  ${catkin_EXPORTED_TARGETS} )
+
 target_link_libraries (laser_slam ${catkin_LIBRARIES} ${OPTIMIZER_LIBS})
 target_link_libraries (laser_slam_service_tester ${catkin_LIBRARIES})
 target_link_libraries (laser_slam_service_from_bag ${catkin_LIBRARIES})
+target_link_libraries (laser_slam_direct_from_bag ${catkin_LIBRARIES}
+  ${OPTIMIZER_LIBS})
 
 install(TARGETS laser_slam_service_tester laser_slam_service_from_bag laser_slam
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

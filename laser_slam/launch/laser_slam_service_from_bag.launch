@@ -7,7 +7,7 @@
 	<param name="velodyne_topic_name" value="/velodyne_points" type="str" />
 	<param name="ekf_topic_name" value="/ekf_odom" type="str" />
 	<param name="gps_topic_name" value="/novatel/gps_fix" type="str" />
-	<param name="distance_increment" value="0.0" type="double" />
+	<param name="distance_increment" value="0.5" type="double" />
 	<param name="skip_scans" value="0" type="int" />
 
   <!-- Launch the grid map visualizer -->

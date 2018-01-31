@@ -19,8 +19,7 @@ void LaserSlam::regenerateGlobalMap() {
   ROS_INFO_STREAM("Laser SLAM::Regenerating Global Map");
   // clear the global map
   global_map->clearMap();
-
-  // integrate the points
+// integrate the points
   PoseGraph *pose_graph = GSO->getPoseGraph();
   // Clears the global map, integrates the points.
   for (unsigned int i = 0; i < pose_graph->nodes.size(); i++) {
